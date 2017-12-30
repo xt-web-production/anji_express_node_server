@@ -11,7 +11,8 @@
   },
   "watch": [
     "apis/*.js",
-    "app.js"
+    "app.js",
+    "data_manage/*.js"
   ],
   "env": {
     "NODE_ENV": "development"
