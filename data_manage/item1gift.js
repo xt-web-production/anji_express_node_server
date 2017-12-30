@@ -17,8 +17,10 @@ module.exports = {
        pool.getConnection((err, connection) => {
            const params = req.body;
            if (err) return next(err);
+           var wcname = params.wcname
+           var img = params.img
            var gift = params.gift
-           connection.query($sql.insert, [gift], function (err, result) {
+           connection.query($sql.insert, [wcname, img, gift], function (err, result) {
                if (result) {
                  res.json({
                      code: '1'
@@ -28,11 +30,14 @@ module.exports = {
            })
        })
    },
-  //统计数量
-   getAllCount: (req, res, next) => {
+  //统计查询
+   queryList: (req, res, next) => {
        pool.getConnection((err, connection) => {
+          const params = req.body;
            if (err) return next(err);
-           connection.query($sql.queryAll, function (err, result) {
+           var wcname = params.wcname
+           var img = params.img
+           connection.query($sql.queryList(), function (err, result) {
              if (result) {
                res.json({
                    code: '1',

@@ -1,16 +1,17 @@
 const anjisql={
     //增
-    insert:'INSERT INTO `item1gift` (`id`,`gift`) VALUES(0,?)',
+    insert:'INSERT INTO `item1gift` (`id`,`wcname`,`img`,`gift`) VALUES(0,?,?,?)',
     //删
     delete: 'delete from item1gift where id=?',
     //删所有
     deleteall: 'delete from item1gift where 1=1',
-    //改
-    update:'UPDATE item1gift SET `gift`=? WHERE `id`=?',
     //查所有
     All: 'select * from item1gift',
-
-    //select * from table LIMIT 10,100；
+    //查所有
+    queryList: function()=>{
+      return `select * from LIMIT ${index}, ${num}`
+    },
+    //select * from table LIMIT 10,100
     //根据ID查找
     searchById: 'select * from item1gift where id=?',
     //统计数量
