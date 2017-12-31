@@ -6,6 +6,7 @@ module.exports = {
     //server Ip
     serverIp: '127.0.0.1',
     port:'3000',
+    code: -1,
     //sql - server地址
     mysql: {
         host: '127.0.0.1',

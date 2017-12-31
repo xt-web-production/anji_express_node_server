@@ -109,6 +109,20 @@ app.post('/queryPraise', function(req, res, next) {
   itemPraise.queryPraise(req, res, next)
 })
 /**
+* -------------------------------------------- 获取当前场景ID --------------------------------------------
+**/
+app.post('/queryCurrentItemType', function(req, res, next) {
+  baseItem.queryCurrentItemType(req, res, next)
+})
+
+
+
+
+
+
+
+/**
+-------------------------------------------- 控制页面 --------------------------------------------
 * -------------------------------------------- 切换场景 --------------------------------------------
 **/
 app.post('/changeScreen', function(req, res, next) {
@@ -119,10 +133,16 @@ app.post('/changeScreen', function(req, res, next) {
   baseItem.setCurrentItemType(req, res, next)
 })
 /**
-* -------------------------------------------- 获取当前场景ID --------------------------------------------
+* -------------------------------------------- 设置开始直播 --------------------------------------------
 **/
-app.post('/queryCurrentItemType', function(req, res, next) {
-  baseItem.queryCurrentItemType(req, res, next)
+app.post('/startShow', function(req, res, next) {
+  baseItem.startShow(req, res, next)
+})
+/**
+* -------------------------------------------- 设置停止直播 --------------------------------------------
+**/
+app.post('/stopShow', function(req, res, next) {
+  baseItem.stopShow(req, res, next)
 })
 
 

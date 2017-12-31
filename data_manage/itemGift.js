@@ -26,7 +26,7 @@ module.exports = {
                return next(err);
              }
              res.json({
-                 code: '1'
+                 code: config.code
              });
            })
        })
@@ -45,7 +45,7 @@ module.exports = {
                return next(err);
              }
              res.json({
-                 code: '1',
+                 code: config.code,
                  data: result
              });
            })
