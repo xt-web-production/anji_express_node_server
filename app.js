@@ -5,11 +5,13 @@ var bodyParser = require('body-parser');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var item1gift = require('./data_manage/item1gift');
+var itemGift = require('./data_manage/itemGift');
+var itemText = require('./data_manage/itemText');
+var itemPraise = require('./data_manage/itemPraise');
+var baseItem = require('./data_manage/baseItem');
 
-
-io.on('connection', function() {
-  console.log('socket is connection')
+io.on('connection', function(socket) {
+  console.log('连接socket');
 });
 
 //设置跨域访问
@@ -27,17 +29,84 @@ app.all('*', function(req, res, next) {
 app.use(bodyParser.json())
 
 /**
-* -------------------------------------------- 节目1， 赠送礼物 --------------------------------------------
+* -------------------------------------------- 节目， 赠送礼物 --------------------------------------------
 **/
-app.post('/sendGift1', function(req, res, next) {
-  item1gift.add(req, res, next)
+app.post('/sendGift', function(req, res, next) {
+  /**
+  {
+    itemtype: params.itemtype,
+    gift: params.gift,
+    name: params.name,
+    img: params.img
+  }
+  **/
+  io.emit('gift', req.body);
+  itemGift.addGift(req, res, next)
 })
 
 /**
-* -------------------------------------------- 节目1， 查询礼物 --------------------------------------------
+* -------------------------------------------- 节目， 查询礼物 --------------------------------------------
 **/
-app.post('/quertGift1', function(req, res, next) {
-  item1gift.getAllCount(req, res, next)
+app.post('/queryGift', function(req, res, next) {
+  /**
+  {
+    page: params.page,
+    pagesize: params.pagesize
+  }
+  **/
+  itemGift.queryGift(req, res, next)
+})
+/**
+* -------------------------------------------- 节目， 发送祝福语 --------------------------------------------
+**/
+app.post('/addText', function(req, res, next) {
+  /**
+  {
+    itemtype: params.itemtype,
+    text: params.text,
+    name: params.name,
+    img: params.img
+  }
+  **/
+  io.emit('text', req.body);
+  itemText.addText(req, res, next)
+})
+
+// /**
+// * -------------------------------------------- 节目， 查询祝福语 --------------------------------------------
+// **/
+app.post('/queryText', function(req, res, next) {
+  /**
+  {
+    page: params.page,
+    pagesize: params.pagesize
+  }
+  **/
+  itemText.queryText(req, res, next)
+})
+/**
+* -------------------------------------------- 节目， 点赞 --------------------------------------------
+**/
+app.post('/addPraise', function(req, res, next) {
+  /**
+  {
+    itemtype: params.itemtype
+  }
+  **/
+  // io.emit('text', req.body);
+  itemPraise.addPraise(req, res, next)
+})
+
+// /**
+// * -------------------------------------------- 节目， 查询点赞 --------------------------------------------
+// **/
+app.post('/queryPraise', function(req, res, next) {
+  /**
+  {
+    itemtype: params.itemtype
+  }
+  **/
+  itemPraise.queryPraise(req, res, next)
 })
 /**
 * -------------------------------------------- 切换场景 --------------------------------------------
@@ -47,8 +116,27 @@ app.post('/changeScreen', function(req, res, next) {
   io.emit('screen', {
     id
   });
-  res.json({success: true, id})
+  baseItem.setCurrentItemType(req, res, next)
 })
+/**
+* -------------------------------------------- 获取当前场景ID --------------------------------------------
+**/
+app.post('/queryCurrentItemType', function(req, res, next) {
+  baseItem.queryCurrentItemType(req, res, next)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
 * -------------------------------------------- 开始投票 --------------------------------------------
