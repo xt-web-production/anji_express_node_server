@@ -172,5 +172,5 @@ app.post('/endTicket', function(req, res, next) {
 })
 
 app.use(express.static('./'))
-server.listen(8009);
+server.listen(80);
 //app.listen(8009);
