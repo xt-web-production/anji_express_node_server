@@ -3,7 +3,7 @@
  */
 const mysql = require('mysql');
 const config = require('../config.js');
-const $sql = require('./itemGiftsql.js');
+const $sql = require('./itemGiftSql.js');
 const path = require('path');
 const fs = require('fs');
 
