@@ -9,9 +9,12 @@ var itemGift = require('./data_manage/itemGift');
 var itemText = require('./data_manage/itemText');
 var itemPraise = require('./data_manage/itemPraise');
 var baseItem = require('./data_manage/baseItem');
-
+var customSocket
 io.on('connection', function(socket) {
-  console.log('连接socket');
+  socket.on('storeBigScreenId', function (data) {
+              customSocket = socket
+          });
+
 });
 
 //设置跨域访问
@@ -26,7 +29,7 @@ app.all('*', function(req, res, next) {
   }
 );
 
-app.use(bodyParser.json())
+ app.use(bodyParser.json())
 
 /**
 * -------------------------------------------- 节目， 赠送礼物 --------------------------------------------
@@ -127,7 +130,7 @@ app.post('/queryCurrentItemType', function(req, res, next) {
 **/
 app.post('/changeScreen', function(req, res, next) {
   var id = req.body.id
-  io.emit('screen', {
+  customSocket.emit('screen', {
     id
   });
   baseItem.setCurrentItemType(req, res, next)
@@ -172,5 +175,5 @@ app.post('/endTicket', function(req, res, next) {
 })
 
 app.use(express.static('./'))
-server.listen(80);
+server.listen(8009);
 //app.listen(8009);
