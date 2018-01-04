@@ -9,9 +9,9 @@ module.exports = {
     code: -1,
     //sql - server地址
     mysql: {
-        host: '127.0.0.1',
+        host: '106.14.144.162',
         user: 'root',
-        password: 'root',
+        password: '12345678',
         database: 'sxx',
         port: 3306,
     },

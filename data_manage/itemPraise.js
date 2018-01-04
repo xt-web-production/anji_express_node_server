@@ -12,7 +12,6 @@ module.exports = {
    addPraise: (req, res, next) => {
        pool.getConnection((err, connection) => {
            const params = req.body;
-           console.log(err);
            if (err) return next(err);
            var itemtype = params.itemtype
            connection.query(`UPDATE itemPraise SET count=count+1 WHERE id=${itemtype}`, function (err, result) {

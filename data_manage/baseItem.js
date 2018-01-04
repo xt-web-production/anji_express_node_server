@@ -47,7 +47,7 @@ module.exports = {
       if (err)
         return next(err);
       var itemtype = params.id
-      connection.query(`UPDATE baseitem SET currentItemType=${itemtype} WHERE id=1`, [itemtype], function(err, result) {
+      connection.query(`UPDATE baseitem SET currentItemType=${itemtype} WHERE id=1`, function(err, result) {
         connection.release();
         if (err) {
           return next(err);

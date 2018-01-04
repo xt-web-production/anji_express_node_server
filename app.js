@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var faker = require('faker');
+var config = require('./config.js');
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
@@ -11,10 +12,10 @@ var itemPraise = require('./data_manage/itemPraise');
 var baseItem = require('./data_manage/baseItem');
 var customSocket
 io.on('connection', function(socket) {
-  socket.on('storeBigScreenId', function (data) {
+  socket.on('customSocket', function (data) {
+    console.log('connect- bigscreen');
               customSocket = socket
           });
-
 });
 
 //设置跨域访问
@@ -30,6 +31,18 @@ app.all('*', function(req, res, next) {
 );
 
  app.use(bodyParser.json())
+
+ /**
+ * -------------------------------------------- 进入直播间 --------------------------------------------
+ **/
+ app.post('/enterShow', function(req, res, next) {
+   const params = req.body;
+   console.log(params);
+   customSocket.emit('userEnter', {
+     data:params
+   });
+    res.json({code: config.code});
+ })
 
 /**
 * -------------------------------------------- 节目， 赠送礼物 --------------------------------------------
@@ -71,7 +84,7 @@ app.post('/addText', function(req, res, next) {
     img: params.img
   }
   **/
-  io.emit('text', req.body);
+  customSocket.emit('text', req.body);
   itemText.addText(req, res, next)
 })
 
@@ -96,7 +109,8 @@ app.post('/addPraise', function(req, res, next) {
     itemtype: params.itemtype
   }
   **/
-  // io.emit('text', req.body);
+  console.log(req.body);
+  customSocket.emit('praise', req.body);
   itemPraise.addPraise(req, res, next)
 })
 
@@ -123,14 +137,13 @@ app.post('/queryCurrentItemType', function(req, res, next) {
 
 
 
-
 /**
 -------------------------------------------- 控制页面 --------------------------------------------
 * -------------------------------------------- 切换场景 --------------------------------------------
 **/
 app.post('/changeScreen', function(req, res, next) {
   var id = req.body.id
-  customSocket.emit('screen', {
+  io.emit('screen', {
     id
   });
   baseItem.setCurrentItemType(req, res, next)
@@ -165,15 +178,15 @@ app.post('/stopShow', function(req, res, next) {
 * -------------------------------------------- 开始投票 --------------------------------------------
 **/
 app.post('/startTicket', function(req, res, next) {
-  res.json({success: true})
+  baseItem.startTicket(req, res, next)
 })
 /**
 * -------------------------------------------- 停止投票 --------------------------------------------
 **/
 app.post('/endTicket', function(req, res, next) {
-  res.json({success: true})
+  baseItem.endTicket(req, res, next)
 })
 
 app.use(express.static('./'))
-server.listen(8009);
+server.listen(6210);
 //app.listen(8009);

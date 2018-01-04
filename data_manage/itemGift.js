@@ -15,6 +15,7 @@ module.exports = {
    addGift: (req, res, next) => {
        pool.getConnection((err, connection) => {
            const params = req.body;
+           console.log(params);
            if (err) return next(err);
            var itemtype = params.itemtype
            var gift = params.gift
