@@ -175,16 +175,22 @@ app.post('/stopShow', function(req, res, next) {
 
 
 /**
-* -------------------------------------------- 开始投票 --------------------------------------------
+* -------------------------------------------- 开始投票（控制台） --------------------------------------------
 **/
-app.post('/startTicket', function(req, res, next) {
+app.post('/allowStartTicket', function(req, res, next) {
   baseItem.startTicket(req, res, next)
 })
 /**
 * -------------------------------------------- 停止投票 --------------------------------------------
 **/
-app.post('/endTicket', function(req, res, next) {
+app.post('/allowEndTicket', function(req, res, next) {
   baseItem.endTicket(req, res, next)
+})
+/**
+* -------------------------------------------- 查询投票资格 --------------------------------------------
+**/
+app.post('/searchIsTicket', function(req, res, next) {
+  baseItem.searchIsTicket(req, res, next)
 })
 
 app.use(express.static('./'))

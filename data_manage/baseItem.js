@@ -40,6 +40,51 @@ module.exports = {
       })
     })
   },
+
+  //开始投票
+  allowStartTicket: (req, res, next) => {
+    pool.getConnection((err, connection) => {
+      if (err)
+        return next(err);
+      connection.query(`UPDATE baseitem SET allowTicket=1 WHERE id=1`, function(err, result) {
+        connection.release();
+        if (err) {
+          return next(err);
+        }
+        res.json({code: config.code});
+      })
+    })
+  },
+  //停止投票
+  allowEndTicket: (req, res, next) => {
+    pool.getConnection((err, connection) => {
+      if (err)
+        return next(err);
+      connection.query(`UPDATE baseitem SET allowTicket=0 WHERE id=1`, function(err, result) {
+        connection.release();
+        if (err) {
+          return next(err);
+        }
+        res.json({code: config.code});
+      })
+    })
+  },
+  //查询是否可以投票
+  searchIsTicket: (req, res, next) => {
+    pool.getConnection((err, connection) => {
+      if (err)
+        return next(err);
+      connection.query(`select allowTicket from baseitem where id=1`, function(err, result) {
+        connection.release();
+        if (err) {
+          return next(err);
+        }
+        res.json({code: config.code, data: result[0]});
+      })
+    })
+  },
+
+
   //设置当前节目ID
   setCurrentItemType: (req, res, next) => {
     pool.getConnection((err, connection) => {
