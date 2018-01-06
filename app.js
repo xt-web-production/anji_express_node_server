@@ -232,5 +232,5 @@ app.post('/searchIsTicket', function(req, res, next) {
 })
 
 app.use(express.static('./web/'))
-server.listen(8080);
+server.listen(80);
 //app.listen(8009);
