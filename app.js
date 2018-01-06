@@ -11,6 +11,7 @@ var itemText = require('./data_manage/itemText');
 var itemPraise = require('./data_manage/itemPraise');
 var itemTicket = require('./data_manage/itemTicket');
 var baseItem = require('./data_manage/baseItem');
+var qs = require('querystring');
 var customSocket = io
 // io.on('connection', function(socket) {
 //   socket.on('customSocket', function (data) {
