@@ -50,7 +50,7 @@ app.all('*', function(req, res, next) {
    request(options, function (err, respon, body) {
      if (err) return next(err);
      if(respon) {
-       console.log(respon);
+       console.log(body);
        const _body = JSON.parse(respon.body)
        const access_token = _body.access_token
        const openid = _body.openid
