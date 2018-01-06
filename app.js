@@ -33,7 +33,7 @@ app.all('*', function(req, res, next) {
 
  app.use(bodyParser.json())
 
- app.post('getToken', function(req, res, next){
+ app.post('/getToken', function(req, res, next){
    let reqUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token?';
    let params = {
      appid: config.appId,
