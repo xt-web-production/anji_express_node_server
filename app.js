@@ -60,7 +60,7 @@ app.all('*', function(req, res, next) {
        };
        request(userOption, function (userErr, userRes, userBody) {
          if (userErr) return next(userErr);
-         res.json({code: 1, success: true, data: userRes})
+         res.json({code: 1, success: true, data: userBody})
        })
      } else {
        res.json({code: 1, success: false, data: {}})
