@@ -41,7 +41,7 @@ module.exports = {
     })
   },
 
-  //允许投票
+  //开始投票
   allowStartTicket: (req, res, next) => {
     pool.getConnection((err, connection) => {
       if (err)
@@ -69,20 +69,51 @@ module.exports = {
       })
     })
   },
-  //查询是否可以投票
-  searchIsTicket: (req, res, next) => {
+  //手机发送投票, 事先查看是否已经投过票了
+  isAllowMobileSendTicket: (req, res, next) => {
     pool.getConnection((err, connection) => {
       if (err)
         return next(err);
-      connection.query(`select allowTicket from baseitem where id=1`, function(err, result) {
+        var openId = req.openId
+      connection.query(`select ticketCount from itemTicketByUser where openId=${openId}`, function(err, result) {
         connection.release();
         if (err) {
           return next(err);
         }
-        res.json({code: config.code, data: result[0]});
+        var result = result[0]
+        res.json({code: config.code, data: result});
       })
     })
   },
+  //手机发送投票
+  mobileSendTicket: (req, res, next) => {
+    pool.getConnection((err, connection) => {
+      if (err)
+        return next(err);
+        var openId = req.openId
+        var itemType = req.itemType
+      connection.query(`INSERT INTO itemTicketByUser (id,openId,itemType,ticketCount) VALUES(0,${openId},${itemType},1)`, function(err, result) {
+        connection.release();
+        if (err) {
+          return next(err);
+        }
+      })
+    })
+    pool.getConnection((err, connection) => {
+      if (err)
+        return next(err);
+        var openId = req.openId
+        var itemType = req.itemType
+      connection.query(`UPDATE itemTicket SET count=count+1 where id=${itemType}`, function(err2, result2) {
+        connection.release();
+        if (err2) {
+          return next(err2);
+        }
+      })
+    })
+    res.json({code: config.code, success: true, msg: '投票成功'});
+  },
+
 
   //设置当前节目ID
   setCurrentItemType: (req, res, next) => {
