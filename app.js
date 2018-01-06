@@ -50,7 +50,8 @@ app.all('*', function(req, res, next) {
    request(options, function (err, respon, body) {
      if (err) return next(err);
      if(respon) {
-       const _body = JSON.parse(res.data.body)
+       console.log(respon);
+       const _body = JSON.parse(respon.body)
        const access_token = _body.access_token
        const openid = _body.openid
        const queryUserUrl = 'https://api.weixin.qq.com/sns/userinfo?access_token=' + access_token + '&openid=' + openid + '&lang=zh_CN'
