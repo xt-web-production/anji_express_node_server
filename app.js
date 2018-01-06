@@ -34,12 +34,11 @@ app.all('*', function(req, res, next) {
  app.use(bodyParser.json())
 
  app.post('getToken', function(req, res, next){
-   var code = req.body
    let reqUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token?';
    let params = {
      appid: config.appId,
      secret: config.appSecret,
-     code: code,
+     code: req.body.code,
      grant_type: 'authorization_code'
    };
 
@@ -213,17 +212,6 @@ app.post('/stopShow', function(req, res, next) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 /**
 * -------------------------------------------- 开始投票（控制台） --------------------------------------------
 **/
@@ -243,6 +231,6 @@ app.post('/searchIsTicket', function(req, res, next) {
   baseItem.searchIsTicket(req, res, next)
 })
 
-app.use(express.static('./'))
-server.listen(80);
+app.use(express.static('./web/'))
+server.listen(8080);
 //app.listen(8009);
