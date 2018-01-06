@@ -49,8 +49,8 @@ app.all('*', function(req, res, next) {
    };
    request(options, function (err, respon, body) {
      if (err) return next(err);
-     if(respon) {
-       const _body = JSON.parse(respon.body)
+     if(body) {
+       const _body = JSON.parse(body)
        const access_token = _body.access_token
        const openid = _body.openid
        const userOption = {
