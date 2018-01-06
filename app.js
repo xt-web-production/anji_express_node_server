@@ -12,6 +12,7 @@ var itemPraise = require('./data_manage/itemPraise');
 var itemTicket = require('./data_manage/itemTicket');
 var baseItem = require('./data_manage/baseItem');
 var qs = require('querystring');
+var request = require('request');
 var customSocket = io
 // io.on('connection', function(socket) {
 //   socket.on('customSocket', function (data) {
@@ -36,6 +37,7 @@ app.all('*', function(req, res, next) {
 
  app.post('/getToken', function(req, res, next){
    let reqUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token?';
+   console.log(req.body.code);
    let params = {
      appid: config.appId,
      secret: config.appSecret,
@@ -233,5 +235,5 @@ app.post('/searchIsTicket', function(req, res, next) {
 })
 
 app.use(express.static('./web/'))
-server.listen(80);
+server.listen(config.port);
 //app.listen(8009);
