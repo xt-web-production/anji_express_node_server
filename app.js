@@ -37,22 +37,33 @@ app.all('*', function(req, res, next) {
 
  app.post('/getToken', function(req, res, next){
    let reqUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token?';
-   console.log(req.body.code);
    let params = {
      appid: config.appId,
      secret: config.appSecret,
      code: req.body.code,
      grant_type: 'authorization_code'
    };
-
    let options = {
      method: 'get',
      url: reqUrl+qs.stringify(params)
    };
-   request(options, function (err, respen, body) {
-     res.json({code: 1, data: respen})
+   request(options, function (err, respon, body) {
+     if (err) return next(err);
+     if(respon) {
+       const _body = JSON.parse(res.data.body)
+       const access_token = _body.access_token
+       const openid = _body.openid
+       const queryUserUrl = 'https://api.weixin.qq.com/sns/userinfo?access_token=' + access_token + '&openid=' + openid + '&lang=zh_CN'
+       request(options, function (userErr, userRes, userBody) {
+         if (userErr) return next(userErr);
+         res.json({code: 1, success: true, data: userRes})
+       })
+     } else {
+       res.json({code: 1, success: false, data: {}})
+     }
    })
  })
+
 
  /**
  * -------------------------------------------- 进入直播间 --------------------------------------------
