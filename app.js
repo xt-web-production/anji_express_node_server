@@ -49,14 +49,8 @@ app.all('*', function(req, res, next) {
      method: 'get',
      url: reqUrl+qs.stringify(params)
    };
-   return new Promise((resolve, reject) => {
-     request(options, function (err, res, body) {
-       if (res) {
-         resolve(body);
-       } else {
-         reject(err);
-       }
-     })
+   request(options, function (err, respen, body) {
+     res.json({code: 1, data: respen})
    })
  })
 
