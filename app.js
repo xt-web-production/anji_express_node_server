@@ -67,7 +67,6 @@ app.all('*', function(req, res, next) {
    })
  })
 
-
  /**
  * -------------------------------------------- 进入直播间 --------------------------------------------
  **/
@@ -242,6 +241,6 @@ app.post('/searchIsTicket', function(req, res, next) {
   baseItem.searchIsTicket(req, res, next)
 })
 
-app.use(express.static('./web/'))
+app.use(express.static('./'))
 server.listen(config.port);
 //app.listen(8009);

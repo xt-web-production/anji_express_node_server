@@ -7,7 +7,7 @@ module.exports = {
     rootPath: path.join(__dirname, '/'),
     //server Ip
     serverIp: '127.0.0.1',
-    port:'80',
+    port:'8009',
     code: 1,
     //sql - server地址
     mysql: {
