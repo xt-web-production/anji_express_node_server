@@ -75,7 +75,7 @@ module.exports = {
       if (err)
         return next(err);
         var openId = req.openId
-      connection.query(`select ticketCount from itemTicketByUser where openId=${openId}`, function(err, result) {
+      connection.query(`select ticketCount from itemTicketByUser where openId='${openId}'`, function(err, result) {
         connection.release();
         if (err) {
           return next(err);
@@ -92,7 +92,8 @@ module.exports = {
         return next(err);
         var openId = req.openId
         var itemType = req.itemType
-      connection.query(`INSERT INTO itemTicketByUser (id,openId,itemType,ticketCount) VALUES(0,${openId},${itemType},1)`, function(err, result) {
+        var name = req.name
+      connection.query(`INSERT INTO itemTicketByUser (id,openId,itemType,ticketCount,name) VALUES(0,'${openId}','${itemType}',1,'${name}')`, function(err, result) {
         connection.release();
         if (err) {
           return next(err);
