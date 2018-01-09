@@ -53,4 +53,20 @@ module.exports = {
            })
        })
    },
+     //屏蔽祝福语
+   updateText: (id, res, next) => {
+       pool.getConnection((err, connection) => {
+           if (err) return next(err);
+           connection.query($sql.updateText(id), function (err, result) {
+             connection.release();
+             if (err) {
+               return next(err);
+             }
+             res.json({
+                 code: config.code,
+                 data: result
+             });
+           })
+       })
+   }
 }

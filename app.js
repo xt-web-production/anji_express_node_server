@@ -14,12 +14,12 @@ var baseItem = require('./data_manage/baseItem');
 var qs = require('querystring');
 var request = require('request');
 var customSocket = io
-// io.on('connection', function(socket) {
-//   socket.on('customSocket', function (data) {
-//     console.log('connect- bigscreen');
-//               customSocket = socket
-//           });
-// });
+io.on('connection', function(socket) {
+  socket.on('customSocket', function (data) {
+    console.log('connect- bigscreen');
+              customSocket = socket
+          });
+});
 
 //设置跨域访问
 app.all('*', function(req, res, next) {
@@ -111,15 +111,6 @@ app.post('/queryGift', function(req, res, next) {
 * -------------------------------------------- 节目， 发送祝福语 --------------------------------------------
 **/
 app.post('/addText', function(req, res, next) {
-  /**
-  {
-    itemtype: params.itemtype,
-    text: params.text,
-    name: params.name,
-    img: params.img
-  }
-  **/
-  customSocket.emit('text', req.body);
   itemText.addText(req, res, next)
 })
 
@@ -127,14 +118,18 @@ app.post('/addText', function(req, res, next) {
 // * -------------------------------------------- 节目， 查询祝福语 --------------------------------------------
 // **/
 app.post('/queryText', function(req, res, next) {
-  /**
-  {
-    page: params.page,
-    pagesize: params.pagesize
-  }
-  **/
   itemText.queryText(req, res, next)
 })
+// -------------------------------------------- 修改祝福语类型为 不上传 allowsend = 0 --------------------------------------------
+app.post('/updateText', function(req, res, next) {
+  itemText.updateText(req.body.id, res, next)
+})
+// -------------------------------------------- 发送祝福语 并将 allowsend = 0 --------------------------------------------
+app.post('/sendText', function(req, res, next) {
+  customSocket.emit('text', req.body);
+  itemText.updateText(req.body.id, res, next)
+})
+
 /**
 * -------------------------------------------- 节目， 点赞 --------------------------------------------
 **/

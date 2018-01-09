@@ -8,9 +8,14 @@ const anjisql={
     //查所有
     All: 'select * from itemtext',
     //查所有
-    queryGift: function(itemtype, page, pagesize){
-      return `select * from itemtext where itemtype=${itemtype} LIMIT ${page}, ${pagesize}`
+    queryText: function(itemtype, page, pagesize){
+      return `select * from itemtext where itemtype=${itemtype} and allowsend=1 LIMIT ${page}, ${pagesize}`
     },
+
+    updateText: function(id) {
+      return `UPDATE itemtext SET allowsend=0 WHERE id=${id}`
+    },
+
     //根据ID查找
     searchById: 'select * from itemtext where id=?',
     //统计数量(根据节目查询)
