@@ -83,16 +83,8 @@ app.all('*', function(req, res, next) {
 * -------------------------------------------- 节目， 赠送礼物 --------------------------------------------
 **/
 app.post('/sendGift', function(req, res, next) {
-  /**
-  {
-    itemtype: params.itemtype,
-    gift: params.gift,
-    name: params.name,
-    img: params.img
-  }
-  **/
-  io.emit('gift', req.body);
-  itemGift.addGift(req, res, next)
+  customSocket.emit('gift', req.body);
+  itemGift.addGift(req.body, res, next)
 })
 
 /**

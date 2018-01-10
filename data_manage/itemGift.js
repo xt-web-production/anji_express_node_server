@@ -12,9 +12,8 @@ const pool = mysql.createPool(config.mysql);
 
 module.exports = {
   //添加礼物
-   addGift: (req, res, next) => {
+   addGift: (params, res, next) => {
        pool.getConnection((err, connection) => {
-           const params = req.body;
            console.log(params);
            if (err) return next(err);
            var itemtype = params.itemtype
