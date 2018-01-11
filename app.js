@@ -72,7 +72,6 @@ app.all('*', function(req, res, next) {
  **/
  app.post('/enterShow', function(req, res, next) {
    const params = req.body;
-   console.log(params);
    customSocket.emit('userEnter', {
      data:params
    });
@@ -83,8 +82,8 @@ app.all('*', function(req, res, next) {
 * -------------------------------------------- 节目， 赠送礼物 --------------------------------------------
 **/
 app.post('/sendGift', function(req, res, next) {
-  customSocket.emit('gift', req.body);
-  itemGift.addGift(req.body, res, next)
+
+  itemGift.addGift(customSocket, req.body, res, next)
 })
 
 /**

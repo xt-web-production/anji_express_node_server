@@ -12,9 +12,8 @@ const pool = mysql.createPool(config.mysql);
 
 module.exports = {
   //添加礼物
-   addGift: (params, res, next) => {
+   addGift: (customSocket, params, res, next) => {
        pool.getConnection((err, connection) => {
-           console.log(params);
            if (err) return next(err);
            var itemtype = params.itemtype
            var gift = params.gift
@@ -25,6 +24,7 @@ module.exports = {
              if (err) {
                return next(err);
              }
+             customSocket.emit('gift', Object.assign(params, {id: result.insertId}));
              res.json({
                  code: config.code
              });
