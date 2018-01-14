@@ -24,7 +24,11 @@ module.exports = {
              if (err) {
                return next(err);
              }
-             customSocket.emit('gift', Object.assign(params, {id: result.insertId}));
+             setInterval(()=>{
+               customSocket.emit('gift', Object.assign(params, {id: Math.random()}));
+                      },2000);
+
+             //customSocket.emit('gift', Object.assign(params, {id: result.insertId}));
              res.json({
                  code: config.code
              });

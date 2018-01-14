@@ -16,7 +16,6 @@ var request = require('request');
 var customSocket = io
 io.on('connection', function(socket) {
   socket.on('customSocket', function (data) {
-    console.log('connect- bigscreen');
               customSocket = socket
           });
 });
@@ -72,6 +71,7 @@ app.all('*', function(req, res, next) {
  **/
  app.post('/enterShow', function(req, res, next) {
    const params = req.body;
+   console.log(params);
    customSocket.emit('userEnter', {
      data:params
    });
@@ -117,7 +117,11 @@ app.post('/updateText', function(req, res, next) {
 })
 // -------------------------------------------- 发送祝福语 并将 allowsend = 0 --------------------------------------------
 app.post('/sendText', function(req, res, next) {
-  customSocket.emit('text', req.body);
+
+  //customSocket.emit('text', req.body);
+  setInterval(()=>{
+             customSocket.emit('text', Object.assign(req.body, {id: Math.random(), name: 'name' + Math.random(), text: 'text' + Math.random()}));
+           },800);
   itemText.updateText(req.body.id, res, next)
 })
 
@@ -131,8 +135,9 @@ app.post('/addPraise', function(req, res, next) {
   }
   **/
   console.log(req.body);
-  customSocket.emit('praise', req.body);
-  itemPraise.addPraise(req, res, next)
+  const itemtype = req.body.itemtype || 1
+  customSocket.emit('praise', itemtype);
+  itemPraise.addPraise(itemtype, res, next)
 })
 
 // /**

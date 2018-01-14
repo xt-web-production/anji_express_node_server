@@ -9,11 +9,9 @@ const pool = mysql.createPool(config.mysql);
 
 module.exports = {
   //添加点赞
-   addPraise: (req, res, next) => {
+   addPraise: (itemtype, res, next) => {
        pool.getConnection((err, connection) => {
-           const params = req.body;
            if (err) return next(err);
-           var itemtype = params.itemtype
            connection.query(`UPDATE itemPraise SET count=count+1 WHERE id=${itemtype}`, function (err, result) {
              connection.release();
              if (err) {

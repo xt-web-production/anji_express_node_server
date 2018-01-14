@@ -15,13 +15,11 @@ module.exports = {
    addText: (req, res, next) => {
        pool.getConnection((err, connection) => {
            const params = req.body;
-           console.log(params);
            if (err) return next(err);
            var itemtype = params.itemtype
            var text = params.text
            var name = params.name
            var img = params.img
-           console.log(params);
            connection.query($sql.insert, [itemtype, text, name, img], function (err, result) {
              connection.release();
              if (err) {
