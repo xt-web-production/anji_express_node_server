@@ -14,9 +14,13 @@ var baseItem = require('./data_manage/baseItem');
 var qs = require('querystring');
 var request = require('request');
 var customSocket = io
+var bigCustomSocket = io
 io.on('connection', function(socket) {
   socket.on('customSocket', function (data) {
               customSocket = socket
+          });
+  socket.on('bigCustomSocket', function (data) {
+              bigCustomSocket = socket
           });
 });
 
@@ -152,16 +156,15 @@ app.post('/queryPraise', function(req, res, next) {
   itemPraise.queryPraise(req, res, next)
 })
 
-// * -------------------------------------------- 手机投票，事先查看是否已经投过票了 --------------------------------------------
+// * -------------------------------------------- 手机投票，事先查看是否已经可以投票 --------------------------------------------
 // **/
-app.post('/isAllowMobileSendTicket', function(req, res, next) {
+app.post('/searchIsTicket', function(req, res, next) {
   /**
   {
     itemtype: params.itemtype
   }
   **/
-  var params = req.body
-  itemTicket.isAllowMobileSendTicket(params, res, next)
+  baseItem.searchIsTicket(req, res, next)
 })
 
 // -------------------------------------------- 手机进行投票 --------------------------------------------
@@ -216,20 +219,34 @@ app.post('/stopShow', function(req, res, next) {
 * -------------------------------------------- 开始投票（控制台） --------------------------------------------
 **/
 app.post('/allowStartTicket', function(req, res, next) {
-  baseItem.startTicket(req, res, next)
+  baseItem.allowStartTicket(req, res, next)
 })
 /**
 * -------------------------------------------- 停止投票 --------------------------------------------
 **/
 app.post('/allowEndTicket', function(req, res, next) {
-  baseItem.endTicket(req, res, next)
+  baseItem.allowEndTicket(req, res, next)
 })
 /**
-* -------------------------------------------- 查询投票资格 --------------------------------------------
+* -------------------------------------------- 获取投票点数 --------------------------------------------
 **/
-app.post('/searchIsTicket', function(req, res, next) {
-  baseItem.searchIsTicket(req, res, next)
+// app.post('/queryTickets', function(req, res, next) {
+//   itemTicket.queryTickets(req, res, next)
+// })
+
+
+/**
+* -------------------------------------------- 切换大屏页面 --------------------------------------------
+**/
+app.post('/changeBigPage', function(req, res, next) {
+  var routeName = req.body.routeName
+  bigCustomSocket.emit('changeBigPage', {
+    routeName
+  })
+  res.json({code: config.code});
 })
+
+
 
 app.use(express.static('./'))
 server.listen(config.port);
