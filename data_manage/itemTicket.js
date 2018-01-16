@@ -86,33 +86,18 @@ module.exports = {
     })
   },
   //手机发送投票
-  mobileSendTicket: (req, res, next) => {
+  mobileSendTicket: (itemType, res, next) => {
     pool.getConnection((err, connection) => {
       if (err)
         return next(err);
-        var openId = req.openId
-        var itemType = req.itemType
-        var name = req.name
-      connection.query(`INSERT INTO itemTicketByUser (id,openId,itemType,ticketCount,name) VALUES(0,'${openId}','${itemType}',1,'${name}')`, function(err, result) {
+      connection.query(`UPDATE itemTicket SET count=count+1 where id=${itemType}`, function(err, result) {
         connection.release();
         if (err) {
           return next(err);
         }
+        res.json({code: config.code, success: true, msg: '投票成功'});
       })
     })
-    pool.getConnection((err, connection) => {
-      if (err)
-        return next(err);
-        var openId = req.openId
-        var itemType = req.itemType
-      connection.query(`UPDATE itemTicket SET count=count+1 where id=${itemType}`, function(err2, result2) {
-        connection.release();
-        if (err2) {
-          return next(err2);
-        }
-      })
-    })
-    res.json({code: config.code, success: true, msg: '投票成功'});
   },
 
 

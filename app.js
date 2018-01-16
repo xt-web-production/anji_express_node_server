@@ -171,8 +171,7 @@ app.post('/mobileSendTicket', function(req, res, next) {
     itemtype: params.itemtype
   }
   **/
-  var params = req.body
-  itemTicket.mobileSendTicket(params, res, next)
+  itemTicket.mobileSendTicket(req.body.itemType, res, next)
 })
 
 /**
