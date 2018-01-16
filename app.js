@@ -75,7 +75,6 @@ app.all('*', function(req, res, next) {
  **/
  app.post('/enterShow', function(req, res, next) {
    const params = req.body;
-   console.log(params);
    customSocket.emit('userEnter', {
      data:params
    });
@@ -86,8 +85,10 @@ app.all('*', function(req, res, next) {
 * -------------------------------------------- 节目， 赠送礼物 --------------------------------------------
 **/
 app.post('/sendGift', function(req, res, next) {
-
-  itemGift.addGift(customSocket, req.body, res, next)
+  console.log(req.body.itemtype);
+  customSocket.emit('gift', Object.assign(req.body));
+  itemTicket.mobileSendGift(req.body.itemtype, res, next)
+  //itemGift.addGift(customSocket, req.body, res, next)
 })
 
 /**
@@ -122,10 +123,8 @@ app.post('/updateText', function(req, res, next) {
 // -------------------------------------------- 发送祝福语 并将 allowsend = 0 --------------------------------------------
 app.post('/sendText', function(req, res, next) {
 
-  //customSocket.emit('text', req.body);
-  setInterval(()=>{
-             customSocket.emit('text', Object.assign(req.body, {id: Math.random(), name: 'name' + Math.random(), text: 'text' + Math.random()}));
-           },800);
+  customSocket.emit('text', req.body);
+  //customSocket.emit('text', Object.assign(req.body, {id: Math.random(), name: 'name' + Math.random(), text: 'text' + Math.random()}));
   itemText.updateText(req.body.id, res, next)
 })
 
@@ -138,7 +137,6 @@ app.post('/addPraise', function(req, res, next) {
     itemtype: params.itemtype
   }
   **/
-  console.log(req.body);
   const itemtype = req.body.itemtype || 1
   customSocket.emit('praise', itemtype);
   itemPraise.addPraise(itemtype, res, next)
@@ -230,9 +228,9 @@ app.post('/allowEndTicket', function(req, res, next) {
 /**
 * -------------------------------------------- 获取投票点数 --------------------------------------------
 **/
-// app.post('/queryTickets', function(req, res, next) {
-//   itemTicket.queryTickets(req, res, next)
-// })
+app.post('/queryResultTickets', function(req, res, next) {
+  itemTicket.queryResultTickets(req, res, next)
+})
 
 
 /**

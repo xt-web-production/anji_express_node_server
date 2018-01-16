@@ -99,37 +99,33 @@ module.exports = {
       })
     })
   },
-
-
-
-  //设置当前节目ID
-  setCurrentItemType: (req, res, next) => {
+  //手机发送礼物记录
+  mobileSendGift: (itemType, res, next) => {
     pool.getConnection((err, connection) => {
-      const params = req.body;
       if (err)
         return next(err);
-      var itemtype = params.id
-      connection.query(`UPDATE baseitem SET currentItemType=${itemtype} WHERE id=1`, function(err, result) {
+      connection.query(`UPDATE itemTicket SET gift=gift+1 where id=${itemType}`, function(err, result) {
         connection.release();
         if (err) {
           return next(err);
         }
-        res.json({code: config.code, data: itemtype});
+        res.json({code: config.code, success: true, msg: '礼物发送记录，保存成功'});
       })
     })
   },
-  //查询当前的节目ID
-  queryCurrentItemType: (req, res, next) => {
+  //手机发送礼物记录
+  queryResultTickets: (req, res, next) => {
     pool.getConnection((err, connection) => {
       if (err)
         return next(err);
-      connection.query('select currentItemType from baseitem where id=1', function(err, result) {
+      connection.query(`select * from itemTicket`, function(err, result) {
         connection.release();
         if (err) {
           return next(err);
         }
-        res.json({code: config.code, data: result[0]});
+        res.json({code: config.code, success: true, data: result});
       })
     })
   }
+
 }
