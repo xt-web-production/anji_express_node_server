@@ -10,6 +10,20 @@ const fs = require('fs');
 const pool = mysql.createPool(config.mysql);
 
 module.exports = {
+  //查询基本控制信息
+  queryBaseItemInfo: (req, res, next) => {
+    pool.getConnection((err, connection) => {
+      if (err)
+        return next(err);
+      connection.query(`select * from baseitem where id=1`, function(err, result) {
+        connection.release();
+        if (err) {
+          return next(err);
+        }
+        res.json({code: config.code, success: true, data: result[0]});
+      })
+    })
+  },
   //设置开始直播
   startShow: (req, res, next) => {
     pool.getConnection((err, connection) => {
@@ -21,7 +35,7 @@ module.exports = {
           return next(err);
         }
         config.code = 1
-        res.json({code: 1});
+        res.json({code: 1, data: result});
       })
     })
   },
@@ -40,7 +54,6 @@ module.exports = {
       })
     })
   },
-
   //允许投票
   allowStartTicket: (req, res, next) => {
     pool.getConnection((err, connection) => {

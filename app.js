@@ -234,6 +234,14 @@ app.post('/queryResultTickets', function(req, res, next) {
 
 
 /**
+* -------------------------------------------- 查询基本控制信息 --------------------------------------------
+**/
+app.post('/queryBaseItemInfo', function(req, res, next) {
+  baseItem.queryBaseItemInfo(req, res, next)
+})
+
+
+/**
 * -------------------------------------------- 切换大屏页面 --------------------------------------------
 **/
 app.post('/changeBigPage', function(req, res, next) {
