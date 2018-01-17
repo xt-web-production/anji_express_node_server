@@ -11,9 +11,9 @@ module.exports = {
     code: 1,
     //sql - server地址
     mysql: {
-        host: '106.14.144.162',
+        host: '118.31.19.0', //118.31.19.0  106.14.144.162 localhst
         user: 'root',
-        password: '12345678',
+        password: 'sXX12345678', // 12345678
         database: 'sxx',
         port: 3306,
     },
