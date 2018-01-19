@@ -85,7 +85,6 @@ app.all('*', function(req, res, next) {
 * -------------------------------------------- 节目， 赠送礼物 --------------------------------------------
 **/
 app.post('/sendGift', function(req, res, next) {
-  console.log(req.body.itemtype);
   customSocket.emit('gift', Object.assign(req.body));
   itemTicket.mobileSendGift(req.body.itemtype, res, next)
   //itemGift.addGift(customSocket, req.body, res, next)
