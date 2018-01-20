@@ -22,6 +22,9 @@ io.on('connection', function(socket) {
   socket.on('bigCustomSocket', function (data) {
               bigCustomSocket = socket
           });
+    socket.on('disconnect', function(){
+      console.log(this);
+    });
 });
 
 //设置跨域访问
