@@ -16,15 +16,12 @@ var request = require('request');
 var customSocket = io
 var bigCustomSocket = io
 io.on('connection', function(socket) {
-  socket.on('customSocket', function (data) {
-              customSocket = socket
-          });
-  socket.on('bigCustomSocket', function (data) {
-              bigCustomSocket = socket
-          });
-    socket.on('disconnect', function(){
-      console.log(this);
-    });
+  socket.on('customSocket', function(data) {
+    customSocket = socket
+  });
+  socket.on('bigCustomSocket', function(data) {
+    bigCustomSocket = socket
+  });
 });
 
 //设置跨域访问
@@ -39,50 +36,50 @@ app.all('*', function(req, res, next) {
   }
 );
 
- app.use(bodyParser.json())
+app.use(bodyParser.json())
 
- app.post('/getToken', function(req, res, next){
-   let reqUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token?';
-   let params = {
-     appid: config.appId,
-     secret: config.appSecret,
-     code: req.body.code,
-     grant_type: 'authorization_code'
-   };
-   let options = {
-     method: 'get',
-     url: reqUrl+qs.stringify(params)
-   };
-   request(options, function (err, respon, body) {
-     if (err) return next(err);
-     if(body) {
-       const _body = JSON.parse(body)
-       const access_token = _body.access_token
-       const openid = _body.openid
-       const userOption = {
-         method: 'get',
-         url: 'https://api.weixin.qq.com/sns/userinfo?access_token=' + access_token + '&openid=' + openid + '&lang=zh_CN'
-       };
-       request(userOption, function (userErr, userRes, userBody) {
-         if (userErr) return next(userErr);
-         res.json({code: 1, success: true, data: userBody})
-       })
-     } else {
-       res.json({code: 1, success: false, data: {}})
-     }
-   })
- })
+app.post('/getToken', function(req, res, next) {
+  let reqUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token?';
+  let params = {
+    appid: config.appId,
+    secret: config.appSecret,
+    code: req.body.code,
+    grant_type: 'authorization_code'
+  };
+  let options = {
+    method: 'get',
+    url: reqUrl + qs.stringify(params)
+  };
+  request(options, function(err, respon, body) {
+    if (err)
+      return next(err);
+    if (body) {
+      const _body = JSON.parse(body)
+      const access_token = _body.access_token
+      const openid = _body.openid
+      const userOption = {
+        method: 'get',
+        url: 'https://api.weixin.qq.com/sns/userinfo?access_token=' + access_token + '&openid=' + openid + '&lang=zh_CN'
+      };
+      request(userOption, function(userErr, userRes, userBody) {
+        if (userErr)
+          return next(userErr);
+        res.json({code: 1, success: true, data: userBody})
+      })
+    } else {
+      res.json({code: 1, success: false, data: {}})
+    }
+  })
+})
 
- /**
+/**
  * -------------------------------------------- 进入直播间 --------------------------------------------
  **/
- app.post('/enterShow', function(req, res, next) {
-   const params = req.body;
-   customSocket.emit('userEnter', {
-     data:params
-   });
-    res.json({code: config.code});
- })
+app.post('/enterShow', function(req, res, next) {
+  const params = req.body;
+  customSocket.emit('userEnter', {data: params});
+  res.json({code: config.code});
+})
 
 /**
 * -------------------------------------------- 节目， 赠送礼物 --------------------------------------------
@@ -184,20 +181,13 @@ app.post('/queryCurrentItemType', function(req, res, next) {
   baseItem.queryCurrentItemType(req, res, next)
 })
 
-
-
-
-
-
 /**
 -------------------------------------------- 控制页面 --------------------------------------------
 * -------------------------------------------- 切换场景 --------------------------------------------
 **/
 app.post('/changeScreen', function(req, res, next) {
   var id = req.body.id
-  io.emit('screen', {
-    id
-  });
+  io.emit('screen', {id});
   baseItem.setCurrentItemType(req, res, next)
 })
 /**
@@ -212,8 +202,6 @@ app.post('/startShow', function(req, res, next) {
 app.post('/stopShow', function(req, res, next) {
   baseItem.stopShow(req, res, next)
 })
-
-
 
 /**
 * -------------------------------------------- 开始投票（控制台） --------------------------------------------
@@ -234,7 +222,6 @@ app.post('/queryResultTickets', function(req, res, next) {
   itemTicket.queryResultTickets(req, res, next)
 })
 
-
 /**
 * -------------------------------------------- 查询基本控制信息 --------------------------------------------
 **/
@@ -242,19 +229,14 @@ app.post('/queryBaseItemInfo', function(req, res, next) {
   baseItem.queryBaseItemInfo(req, res, next)
 })
 
-
 /**
 * -------------------------------------------- 切换大屏页面 --------------------------------------------
 **/
 app.post('/changeBigPage', function(req, res, next) {
   var routeName = req.body.routeName
-  bigCustomSocket.emit('changeBigPage', {
-    routeName
-  })
+  bigCustomSocket.emit('changeBigPage', {routeName})
   res.json({code: config.code});
 })
-
-
 
 app.use(express.static('./'))
 server.listen(config.port);
