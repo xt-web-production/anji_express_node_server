@@ -55,6 +55,7 @@ app.post('/getToken', function(req, res, next) {
       return next(err);
     if (body) {
       const _body = JSON.parse(body)
+      console.log(_body);
       const access_token = _body.access_token
       const openid = _body.openid
       const userOption = {
